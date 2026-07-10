@@ -113,20 +113,23 @@ export function stepFor(value) {
   return 0.5
 }
 
-export function LineStepper({ value, onChange, compact = false }) {
-  const step = stepFor(value)
+export function LineStepper({ value, onChange, compact = false, min = 0.5 }) {
+  const step = stepFor(Math.abs(value))
   const btn = `${compact ? 'w-7 h-7' : 'w-9 h-9'} rounded-lg bg-ink-600 border border-edge text-fog font-bold active:bg-ink-700 select-none`
   return (
     <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-      <button type="button" className={btn} onClick={() => onChange(Math.max(0.5, value - step))}>
+      <button type="button" className={btn} onClick={() => onChange(Math.max(min, value - step))}>
         −
       </button>
       <input
         type="number"
         step="0.5"
-        min="0.5"
+        min={min}
         value={value}
-        onChange={(e) => onChange(Math.max(0.5, parseFloat(e.target.value) || 0.5))}
+        onChange={(e) => {
+          const v = parseFloat(e.target.value)
+          onChange(Math.max(min, Number.isFinite(v) ? v : min))
+        }}
         className={`${compact ? 'w-16 h-7 text-sm' : 'w-20 h-9 text-lg'} rounded-lg bg-ink-900 border border-edge text-center font-display font-bold text-white outline-none focus:border-volt-500/60`}
       />
       <button type="button" className={btn} onClick={() => onChange(value + step)}>

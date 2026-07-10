@@ -143,24 +143,42 @@ export async function getGameLog(player, sport, n = 20) {
 // --- Matchups & game props ----------------------------------------------
 
 /**
- * Games around now (yesterday -> +8 days) for the sport's league.
- * Returns [{ id, date, time, status, detail, home, away, homeScore, awayScore }]
- * where home/away = { id, abbr, name, logo }.
+ * Games for the sport's league. Tries a window around now first; during the
+ * offseason walks forward for the next published fixtures, then falls back
+ * to the most recent completed games.
+ * Returns { phase: 'now' | 'upcoming' | 'recent', games: [...] } where each
+ * game = { id, date, status, detail, home, away, homeScore, awayScore, odds }.
  */
 export async function getMatchups(sport) {
   const cfg = SPORTS[sport]
-  const cacheKey = `matchups:${sport}`
+  const cacheKey = `matchups2:${sport}`
   const hit = cacheGet(cacheKey)
   if (hit) return hit
 
   const fmt = (d) => d.toISOString().slice(0, 10).replaceAll('-', '')
-  const from = new Date(Date.now() - 1 * 86400000)
-  const to = new Date(Date.now() + 8 * 86400000)
-  const d = await fetchJson(
-    `https://site.api.espn.com/apis/site/v2/sports/${cfg.scoreboard}/scoreboard?dates=${fmt(from)}-${fmt(to)}&limit=100`,
-  )
+  const day = 86400000
+  const windows = [
+    { phase: 'now', from: -1, to: 8 },
+    { phase: 'upcoming', from: 8, to: 45 },
+    { phase: 'upcoming', from: 45, to: 110 },
+    { phase: 'recent', from: -45, to: -1 },
+  ]
+
+  let phase = 'now'
+  let events = []
+  for (const w of windows) {
+    const d = await fetchJson(
+      `https://site.api.espn.com/apis/site/v2/sports/${cfg.scoreboard}/scoreboard?dates=${fmt(new Date(Date.now() + w.from * day))}-${fmt(new Date(Date.now() + w.to * day))}&limit=100`,
+    )
+    if (d.events?.length) {
+      phase = w.phase
+      events = d.events
+      break
+    }
+  }
+
   const games = []
-  for (const ev of d.events || []) {
+  for (const ev of events) {
     const comp = ev.competitions?.[0]
     const cs = comp?.competitors || []
     const h = cs.find((c) => c.homeAway === 'home')
@@ -193,9 +211,11 @@ export async function getMatchups(sport) {
       odds,
     })
   }
-  games.sort((x, y) => (x.date > y.date ? 1 : -1))
-  cacheSet(cacheKey, games)
-  return games
+  // upcoming games oldest-first (soonest first); recent results newest-first
+  games.sort((x, y) => (phase === 'recent' ? (x.date < y.date ? 1 : -1) : x.date > y.date ? 1 : -1))
+  const result = { phase, games }
+  cacheSet(cacheKey, result)
+  return result
 }
 
 /**
@@ -236,6 +256,53 @@ export async function getTeamRecent(sport, teamId, n = 10) {
     const recent = out.slice(0, n)
     cacheSet(cacheKey, recent)
     return recent
+  } catch {
+    return []
+  }
+}
+
+// positions worth showing player props for, per sport (empty = all)
+const PROP_POSITIONS = {
+  nfl: ['QB', 'RB', 'WR', 'TE'],
+  mlb: ['C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF', 'DH', 'OF', 'IF'],
+}
+const SOCCER_POS_ORDER = { F: 0, A: 0, M: 1, D: 2, G: 3 }
+
+/** Team roster, normalized to [{ id, name, position }], prop-relevant players first. */
+export async function getTeamRoster(sport, teamId, cap = 14) {
+  const cfg = SPORTS[sport]
+  const cacheKey = `roster:${sport}:${teamId}`
+  const hit = cacheGet(cacheKey)
+  if (hit) return hit
+
+  try {
+    const d = await fetchJson(
+      `https://site.api.espn.com/apis/site/v2/sports/${cfg.scoreboard}/teams/${teamId}/roster`,
+    )
+    // flat (soccer) or grouped-by-position (nfl/mlb/…)
+    const raw = Array.isArray(d.athletes)
+      ? d.athletes[0]?.items
+        ? d.athletes.flatMap((g) => g.items || [])
+        : d.athletes
+      : []
+    let players = raw
+      .map((p) => ({
+        id: String(p.id || ''),
+        name: p.displayName || p.fullName || '',
+        position: p.position?.abbreviation || '',
+      }))
+      .filter((p) => p.id && p.name)
+
+    const allowed = PROP_POSITIONS[sport]
+    if (allowed) players = players.filter((p) => allowed.includes(p.position))
+    if (cfg.searchSport === 'soccer')
+      players.sort(
+        (a, b) => (SOCCER_POS_ORDER[a.position?.[0]] ?? 2) - (SOCCER_POS_ORDER[b.position?.[0]] ?? 2),
+      )
+
+    const out = players.slice(0, cap)
+    cacheSet(cacheKey, out)
+    return out
   } catch {
     return []
   }

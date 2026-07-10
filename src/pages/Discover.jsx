@@ -24,32 +24,42 @@ async function mapLimit(items, limit, fn) {
 
 function MatchupStrip({ sport }) {
   const navigate = useNavigate()
-  const [games, setGames] = useState(null)
+  const [data, setData] = useState(null)
 
   useEffect(() => {
     let alive = true
-    setGames(null)
+    setData(null)
     getMatchups(sport)
-      .then((g) => alive && setGames(g.slice(0, 14)))
-      .catch(() => alive && setGames([]))
+      .then((d) => alive && setData({ phase: d.phase, games: d.games.slice(0, 14) }))
+      .catch(() => alive && setData({ phase: 'now', games: [] }))
     return () => {
       alive = false
     }
   }, [sport])
 
-  if (!games || !games.length) return null
+  if (!data || !data.games.length) return null
+  const { phase, games } = data
 
   const fmtWhen = (g) => {
     if (g.status === 'in') return `LIVE ${g.awayScore}–${g.homeScore}`
     if (g.status === 'post') return `FT ${g.awayScore}–${g.homeScore}`
-    return new Date(g.date).toLocaleString([], { weekday: 'short', hour: '2-digit', minute: '2-digit' })
+    const opts =
+      phase === 'upcoming'
+        ? { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }
+        : { weekday: 'short', hour: '2-digit', minute: '2-digit' }
+    return new Date(g.date).toLocaleString([], opts)
   }
+
+  const heading =
+    phase === 'upcoming'
+      ? 'Upcoming fixtures · tap for game props'
+      : phase === 'recent'
+        ? 'Recent results · tap for game props'
+        : 'Matchups · tap for game props'
 
   return (
     <div className="pb-3">
-      <p className="px-4 pb-1.5 text-[10px] uppercase tracking-widest text-mist">
-        Matchups · tap for game props
-      </p>
+      <p className="px-4 pb-1.5 text-[10px] uppercase tracking-widest text-mist">{heading}</p>
       <div className="flex gap-2 overflow-x-auto no-scrollbar px-4">
         {games.map((g) => (
           <button

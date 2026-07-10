@@ -4,9 +4,14 @@ import { persist } from 'zustand/middleware'
 export const useStore = create(
   persist(
     (set, get) => ({
-      // parlay slip legs: { key, playerId, playerName, teamAbbr, stat, line, dir, hitPct, hits, total, demo }
+      // active sport tab, persisted across sessions
+      sport: 'nba',
+      setSport: (sport) => set({ sport }),
+
+      // parlay slip legs:
+      // { key, sport, playerId, playerName, team, stat, line, dir, hitPct, hits, total, demo }
       legs: [],
-      // manually-entered lines, keyed `${playerId}:${stat}`
+      // manually-entered lines, keyed `${sport}:${playerId}:${stat}`
       lines: {},
 
       addLeg: (leg) =>
@@ -16,10 +21,9 @@ export const useStore = create(
       removeLeg: (key) => set((s) => ({ legs: s.legs.filter((l) => l.key !== key) })),
       clearSlip: () => set({ legs: [] }),
 
-      setLine: (playerId, stat, line) =>
-        set((s) => ({ lines: { ...s.lines, [`${playerId}:${stat}`]: line } })),
-      getLine: (playerId, stat) => get().lines[`${playerId}:${stat}`],
+      setLine: (lineKey, line) => set((s) => ({ lines: { ...s.lines, [lineKey]: line } })),
+      getLine: (lineKey) => get().lines[lineKey],
     }),
-    { name: 'statlyne:slip' },
+    { name: 'statlyne:slip', version: 2 },
   ),
 )

@@ -1,21 +1,28 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import starPlayers from '../data/starPlayers.json'
-import { searchPlayers, getPlayer, getGameLog } from '../api/nba'
-import { STAT_CATEGORIES, statLabel, suggestedLine, hitRate, trendTier, average } from '../lib/trends'
+import stars from '../data/stars.json'
+import { searchPlayers, getGameLog } from '../api/espn'
+import { SPORTS, catBy, statShort } from '../lib/sports'
+import { suggestedLine, hitRate, trendTier, average } from '../lib/trends'
 import { useStore } from '../store/useStore'
-import { Avatar, TrendBadge, DemoTag, DemoBanner, BarChart, LineStepper, Spinner } from '../components/ui'
+import { Avatar, TrendBadge, DemoBanner, BarChart, LineStepper, Spinner } from '../components/ui'
 
 const chip = (active) =>
   `rounded-lg border px-2.5 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors ${
     active ? 'border-volt-500/60 bg-volt-500/15 text-volt-500' : 'border-edge bg-ink-800 text-mist active:bg-ink-700'
   }`
 
-function PlayerSearch({ onSelect }) {
+function PlayerSearch({ sport, onSelect }) {
   const [q, setQ] = useState('')
   const [results, setResults] = useState(null)
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState(null)
+
+  useEffect(() => {
+    setQ('')
+    setResults(null)
+    setErr(null)
+  }, [sport])
 
   async function run(e) {
     e?.preventDefault()
@@ -23,9 +30,9 @@ function PlayerSearch({ onSelect }) {
     setBusy(true)
     setErr(null)
     try {
-      setResults(await searchPlayers(q.trim()))
-    } catch (ex) {
-      setErr(ex.status === 429 ? 'Rate limit hit — wait a minute and retry.' : 'Search failed.')
+      setResults(await searchPlayers(q.trim(), sport))
+    } catch {
+      setErr('Search failed — try again in a moment.')
     } finally {
       setBusy(false)
     }
@@ -37,7 +44,7 @@ function PlayerSearch({ onSelect }) {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search any NBA player…"
+          placeholder={`Search any ${SPORTS[sport].label} player…`}
           className="flex-1 rounded-xl border border-edge bg-ink-800 px-3.5 py-3 text-sm text-white placeholder:text-mist/60 outline-none focus:border-volt-500/60"
         />
         <button
@@ -59,13 +66,10 @@ function PlayerSearch({ onSelect }) {
                 onClick={() => onSelect(p)}
                 className="flex w-full items-center gap-3 rounded-xl border border-edge bg-ink-800/70 px-3 py-2.5 text-left active:bg-ink-700"
               >
-                <Avatar name={p.name} />
+                <Avatar name={p.name} sport={sport} playerId={p.id} />
                 <span>
                   <span className="block font-semibold text-white">{p.name}</span>
-                  <span className="text-[11px] text-mist">
-                    {p.team_name || 'Free agent'}
-                    {p.position ? ` · ${p.position}` : ''}
-                  </span>
+                  <span className="text-[11px] text-mist">{p.team || SPORTS[sport].label}</span>
                 </span>
               </button>
             </li>
@@ -77,9 +81,9 @@ function PlayerSearch({ onSelect }) {
         <div className="mt-5">
           <p className="mb-2 text-[10px] uppercase tracking-widest text-mist">Quick picks</p>
           <div className="flex flex-wrap gap-1.5">
-            {starPlayers.slice(0, 12).map((p) => (
+            {(stars[sport] || []).slice(0, 12).map((p) => (
               <button key={p.id} onClick={() => onSelect(p)} className={chip(false)}>
-                {p.last_name}
+                {p.name.split(' ').slice(-1)[0]}
               </button>
             ))}
           </div>
@@ -89,28 +93,31 @@ function PlayerSearch({ onSelect }) {
   )
 }
 
-function Workstation({ player }) {
+function Workstation({ sport, player }) {
   const [searchParams] = useSearchParams()
   const [log, setLog] = useState(null)
-  const [stat, setStat] = useState(searchParams.get('stat') || 'pts')
+  const [stat, setStat] = useState(searchParams.get('stat') || null)
   const [windowN, setWindowN] = useState(10)
   const [venue, setVenue] = useState('all') // all | home | away
   const [vsOpp, setVsOpp] = useState('all')
   const [dir, setDir] = useState('over')
   const [added, setAdded] = useState(false)
 
-  const storeLine = useStore((s) => s.lines[`${player.id}:${stat}`])
   const setStoreLine = useStore((s) => s.setLine)
   const addLeg = useStore((s) => s.addLeg)
 
   useEffect(() => {
     let alive = true
     setLog(null)
-    getGameLog(player).then((r) => alive && setLog(r))
+    getGameLog(player, sport).then((r) => {
+      if (!alive) return
+      setLog(r)
+      setStat((cur) => (cur && r.available.includes(cur) ? cur : r.available[0]))
+    })
     return () => {
       alive = false
     }
-  }, [player])
+  }, [player, sport])
 
   const filtered = useMemo(() => {
     if (!log) return []
@@ -121,25 +128,30 @@ function Workstation({ player }) {
   }, [log, venue, vsOpp, windowN])
 
   const suggested = useMemo(
-    () => (filtered.length ? suggestedLine(filtered, stat) : 0.5),
+    () => (filtered.length && stat ? suggestedLine(filtered, stat) : 0.5),
     [filtered, stat],
   )
+  const lineKey = `${sport}:${player.id}:${stat}`
+  const storeLine = useStore((s) => s.lines[lineKey])
   const line = storeLine ?? suggested
   const { hits, total, pct } = hitRate(filtered, stat, line, dir)
-  const avg = average(filtered, stat)
+  const avg = stat ? average(filtered, stat) : 0
   const opponents = useMemo(
     () => (log ? [...new Set(log.games.map((g) => g.opponent))].sort() : []),
     [log],
   )
 
-  if (!log) return <Spinner label={`Loading ${player.last_name} logs`} />
+  if (!log || !stat) return <Spinner label={`Loading ${player.name.split(' ').slice(-1)[0]} logs`} />
+
+  const cats = SPORTS[sport].cats.filter((c) => log.available.includes(c.key))
 
   function addToParlay() {
     addLeg({
-      key: `${player.id}:${stat}`,
+      key: lineKey,
+      sport,
       playerId: player.id,
       playerName: player.name,
-      teamAbbr: player.team_abbr,
+      team: log.team || player.team || '',
       stat,
       line,
       dir,
@@ -157,8 +169,8 @@ function Workstation({ player }) {
       {log.demo && <div className="-mx-4 mt-3"><DemoBanner /></div>}
 
       {/* stat chips */}
-      <div className="mt-3 grid grid-cols-4 gap-1.5">
-        {STAT_CATEGORIES.map((s) => (
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {cats.map((s) => (
           <button key={s.key} onClick={() => setStat(s.key)} className={chip(stat === s.key)}>
             {s.short}
           </button>
@@ -209,7 +221,7 @@ function Workstation({ player }) {
               </TrendBadge>
             </div>
             <p className="mt-1 text-[11px] text-mist">
-              {statLabel(stat)} avg {avg.toFixed(1)} in this split
+              {catBy(sport, stat)?.label || stat} avg {avg.toFixed(1)} in this split
             </p>
           </div>
           <div className="flex flex-col items-end gap-2">
@@ -226,7 +238,7 @@ function Workstation({ player }) {
                 </button>
               ))}
             </div>
-            <LineStepper compact value={line} onChange={(v) => setStoreLine(player.id, stat, v)} />
+            <LineStepper compact value={line} onChange={(v) => setStoreLine(lineKey, v)} />
           </div>
         </div>
         <p className="mt-1.5 text-right text-[9px] uppercase tracking-widest text-mist/60">
@@ -243,7 +255,7 @@ function Workstation({ player }) {
             added ? 'bg-volt-600 text-ink-950' : 'bg-volt-500 text-ink-950 active:bg-volt-600'
           }`}
         >
-          {added ? '✓ Added to slip' : `Add ${dir} ${line} ${statLabel(stat)} to parlay`}
+          {added ? '✓ Added to slip' : `Add ${dir} ${line} ${statShort(sport, stat)} to parlay`}
         </button>
       </section>
 
@@ -254,20 +266,20 @@ function Workstation({ player }) {
             <tr className="bg-ink-800 text-[10px] uppercase tracking-widest text-mist">
               <th className="px-3 py-2 text-left font-semibold">Date</th>
               <th className="px-2 py-2 text-left font-semibold">Opp</th>
-              <th className="px-2 py-2 text-right font-semibold">{statLabel(stat)}</th>
+              <th className="px-2 py-2 text-right font-semibold">{statShort(sport, stat)}</th>
               <th className="px-3 py-2 text-right font-semibold">{dir}</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((g, i) => {
-              const hit = dir === 'over' ? g[stat] > line : g[stat] < line
+              const hit = dir === 'over' ? (g[stat] ?? 0) > line : (g[stat] ?? 0) < line
               return (
                 <tr key={i} className={`border-t border-edge/50 ${i % 2 ? 'bg-ink-900/40' : ''}`}>
                   <td className="px-3 py-2 text-xs text-mist">{g.date.slice(5)}</td>
                   <td className="px-2 py-2 text-xs text-fog">
                     {g.home ? 'vs' : '@'} {g.opponent}
                   </td>
-                  <td className="px-2 py-2 text-right font-display text-base font-bold text-white">{g[stat]}</td>
+                  <td className="px-2 py-2 text-right font-display text-base font-bold text-white">{g[stat] ?? 0}</td>
                   <td className="px-3 py-2 text-right">
                     <span className={`inline-block h-2.5 w-2.5 rounded-full ${hit ? 'bg-volt-500' : 'bg-ink-600'}`} />
                   </td>
@@ -282,11 +294,19 @@ function Workstation({ player }) {
 }
 
 export default function Research() {
-  const { playerId } = useParams()
+  const { sport: routeSport, playerId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
+  const storeSport = useStore((s) => s.sport)
+  const setSport = useStore((s) => s.setSport)
+  const sport = routeSport && SPORTS[routeSport] ? routeSport : storeSport
   const [player, setPlayer] = useState(location.state?.player || null)
-  const [failed, setFailed] = useState(false)
+
+  // deep links carry their own sport — sync the global tab to match
+  useEffect(() => {
+    if (routeSport && SPORTS[routeSport] && routeSport !== storeSport) setSport(routeSport)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeSport])
 
   useEffect(() => {
     if (!playerId) {
@@ -294,28 +314,25 @@ export default function Research() {
       return
     }
     if (player && String(player.id) === String(playerId)) return
-    const bundled = starPlayers.find((p) => String(p.id) === String(playerId))
-    if (bundled) {
-      setPlayer(bundled)
-      return
-    }
-    getPlayer(playerId)
-      .then(setPlayer)
-      .catch(() => setFailed(true))
+    const bundled = (stars[sport] || []).find((p) => String(p.id) === String(playerId))
+    // ESPN has no cheap "player by id" endpoint; deep links without state still
+    // work because the workstation only needs id + name (name from bundle or placeholder)
+    setPlayer(bundled || { id: playerId, name: `Player ${playerId}`, team: '' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playerId])
+  }, [playerId, sport])
 
   return (
     <main className="pt-4">
       {player && (
         <div className="flex items-center gap-3 px-4">
-          <Avatar name={player.name} size="lg" />
+          <Avatar name={player.name} sport={sport} playerId={player.id} size="lg" />
           <div className="flex-1">
             <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-white leading-none">
               {player.name}
             </h2>
             <p className="text-[11px] text-mist">
-              {player.team_name || player.team_abbr}
+              {SPORTS[sport].emoji} {SPORTS[sport].label}
+              {player.team ? ` · ${player.team}` : ''}
               {player.position ? ` · ${player.position}` : ''}
             </p>
           </div>
@@ -332,15 +349,16 @@ export default function Research() {
       )}
 
       {player ? (
-        <Workstation key={player.id} player={player} />
-      ) : failed ? (
-        <p className="px-6 py-16 text-center text-sm text-mist">Couldn't load that player.</p>
+        <Workstation key={`${sport}:${player.id}`} sport={sport} player={player} />
       ) : (
         <div className="pt-1">
           <p className="px-4 pb-3 text-[11px] text-mist">
             Pick a player to open the workstation — filters, splits, hit-rates and game logs.
           </p>
-          <PlayerSearch onSelect={(p) => navigate(`/research/${p.id}`, { state: { player: p } })} />
+          <PlayerSearch
+            sport={sport}
+            onSelect={(p) => navigate(`/research/${sport}/${p.id}`, { state: { player: p } })}
+          />
         </div>
       )}
     </main>

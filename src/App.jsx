@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import BottomNav from './components/BottomNav'
+import SportSwitcher from './components/SportSwitcher'
 import Discover from './pages/Discover'
 import Research from './pages/Research'
 import Parlay from './pages/Parlay'
@@ -18,11 +19,12 @@ export default function App() {
             purposes only — no real odds
           </span>
         </div>
+        <SportSwitcher />
       </header>
       <Routes>
         <Route path="/" element={<Discover />} />
         <Route path="/research" element={<Research />} />
-        <Route path="/research/:playerId" element={<Research />} />
+        <Route path="/research/:sport/:playerId" element={<Research />} />
         <Route path="/parlay" element={<Parlay />} />
       </Routes>
       <BottomNav />

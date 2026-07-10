@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from '../store/useStore'
-import { statLabel, trendTier } from '../lib/trends'
+import { SPORTS, statShort } from '../lib/sports'
+import { trendTier } from '../lib/trends'
 import { Avatar, TrendBadge, DemoTag } from '../components/ui'
 
 export default function Parlay() {
@@ -17,7 +18,7 @@ export default function Parlay() {
       `STATLYNE SLIP — ${legs.length} leg${legs.length > 1 ? 's' : ''}`,
       ...legs.map(
         (l) =>
-          `• ${l.playerName} ${l.dir.toUpperCase()} ${l.line} ${statLabel(l.stat)} — ${l.hitPct}% (${l.hits}/${l.total})`,
+          `• ${SPORTS[l.sport]?.emoji || ''} ${l.playerName} ${l.dir.toUpperCase()} ${l.line} ${statShort(l.sport, l.stat)} — ${l.hitPct}% (${l.hits}/${l.total})`,
       ),
       `Est. combined hit rate: ${combinedPct}% (naive independence)`,
       'Research & entertainment only — no real odds.',
@@ -48,7 +49,7 @@ export default function Parlay() {
         </div>
         <h2 className="font-display text-xl font-bold uppercase tracking-wide text-white">Slip is empty</h2>
         <p className="mx-auto mt-2 max-w-[26ch] text-sm text-mist">
-          Add legs from the Discover feed or the Research workstation.
+          Add legs from the Discover feed or the Research workstation — any sport, one slip.
         </p>
         <button
           onClick={() => navigate('/')}
@@ -74,14 +75,17 @@ export default function Parlay() {
       <div className="flex flex-col gap-2.5">
         {legs.map((l) => (
           <div key={l.key} className="rise-in flex items-center gap-3 rounded-2xl border border-edge bg-ink-800/80 p-3">
-            <Avatar name={l.playerName} />
+            <Avatar name={l.playerName} sport={l.sport} playerId={l.playerId} />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <p className="truncate font-semibold text-white">{l.playerName}</p>
                 {l.demo && <DemoTag />}
               </div>
               <p className="text-[11px] text-mist">
-                {l.teamAbbr} · <span className="uppercase font-bold text-fog">{l.dir} {l.line} {statLabel(l.stat)}</span>
+                {SPORTS[l.sport]?.emoji} {l.team ? `${l.team} · ` : ''}
+                <span className="uppercase font-bold text-fog">
+                  {l.dir} {l.line} {statShort(l.sport, l.stat)}
+                </span>
               </p>
             </div>
             <TrendBadge pct={l.hitPct}>

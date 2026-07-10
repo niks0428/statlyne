@@ -1,17 +1,31 @@
+import { useState } from 'react'
 import { trendTier } from '../lib/trends'
+import { headshotUrl } from '../lib/sports'
 
-export function Avatar({ name, size = 'md' }) {
+export function Avatar({ name, sport, playerId, size = 'md' }) {
+  const [imgFailed, setImgFailed] = useState(false)
   const initials = name
     .split(' ')
     .map((w) => w[0])
     .slice(0, 2)
     .join('')
   const cls = size === 'lg' ? 'w-14 h-14 text-xl' : 'w-11 h-11 text-base'
+  const showImg = sport && playerId && !imgFailed
   return (
     <div
-      className={`${cls} shrink-0 rounded-xl bg-ink-600 border border-edge flex items-center justify-center font-display font-bold text-fog uppercase`}
+      className={`${cls} shrink-0 rounded-xl bg-ink-600 border border-edge flex items-center justify-center font-display font-bold text-fog uppercase overflow-hidden`}
     >
-      {initials}
+      {showImg ? (
+        <img
+          src={headshotUrl(sport, playerId)}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover object-top"
+          onError={() => setImgFailed(true)}
+        />
+      ) : (
+        initials
+      )}
     </div>
   )
 }
@@ -36,7 +50,7 @@ export function DemoTag() {
   return (
     <span
       className="rounded border border-dashed border-mist/50 px-1 py-px text-[9px] font-bold uppercase tracking-widest text-mist"
-      title="Simulated game logs — live per-game stats require a balldontlie ALL-STAR tier key"
+      title="Simulated game log — ESPN stats were unreachable for this player"
     >
       demo
     </span>
@@ -46,16 +60,15 @@ export function DemoTag() {
 export function DemoBanner() {
   return (
     <div className="mx-4 mb-3 rounded-lg border border-dashed border-amber-hot/40 bg-amber-hot/8 px-3 py-2 text-[11px] leading-snug text-amber-hot/90">
-      <b>Simulated game logs.</b> Your balldontlie key is free-tier — the per-game
-      stats endpoint needs the ALL-STAR tier. Players, teams &amp; schedule are live;
-      logs are deterministic demo data until the key is upgraded.
+      <b>Simulated game logs.</b> ESPN's stats feed couldn't be reached for some
+      players, so their logs are deterministic demo data until it's back.
     </div>
   )
 }
 
-/** Mini bar chart: last N games vs a line. Bars over the line glow volt. */
+/** Mini bar chart: last N games vs a line. Bars that hit glow volt. */
 export function BarChart({ games, stat, line, dir = 'over', height = 72, animate = true }) {
-  const vals = games.map((g) => g[stat])
+  const vals = games.map((g) => g[stat] ?? 0)
   if (!vals.length) return null
   const max = Math.max(...vals, line * 1.15, 1)
   const shown = [...games].reverse() // oldest -> newest, reads left to right
@@ -72,7 +85,7 @@ export function BarChart({ games, stat, line, dir = 'over', height = 72, animate
       </div>
       <div className="absolute inset-0 flex items-end gap-[3px]">
         {shown.map((g, i) => {
-          const v = g[stat]
+          const v = g[stat] ?? 0
           const hit = dir === 'over' ? v > line : v < line
           return (
             <div key={i} className="flex-1 flex flex-col justify-end h-full group relative">
@@ -93,12 +106,19 @@ export function BarChart({ games, stat, line, dir = 'over', height = 72, animate
   )
 }
 
-/** Numeric line stepper: +/- 0.5 */
+/** Numeric line stepper. Step scales with the line's magnitude (yards vs goals). */
+export function stepFor(value) {
+  if (value >= 100) return 5
+  if (value >= 20) return 1
+  return 0.5
+}
+
 export function LineStepper({ value, onChange, compact = false }) {
+  const step = stepFor(value)
   const btn = `${compact ? 'w-7 h-7' : 'w-9 h-9'} rounded-lg bg-ink-600 border border-edge text-fog font-bold active:bg-ink-700 select-none`
   return (
     <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-      <button type="button" className={btn} onClick={() => onChange(Math.max(0.5, value - 0.5))}>
+      <button type="button" className={btn} onClick={() => onChange(Math.max(0.5, value - step))}>
         −
       </button>
       <input
@@ -107,9 +127,9 @@ export function LineStepper({ value, onChange, compact = false }) {
         min="0.5"
         value={value}
         onChange={(e) => onChange(Math.max(0.5, parseFloat(e.target.value) || 0.5))}
-        className={`${compact ? 'w-14 h-7 text-sm' : 'w-20 h-9 text-lg'} rounded-lg bg-ink-900 border border-edge text-center font-display font-bold text-white outline-none focus:border-volt-500/60`}
+        className={`${compact ? 'w-16 h-7 text-sm' : 'w-20 h-9 text-lg'} rounded-lg bg-ink-900 border border-edge text-center font-display font-bold text-white outline-none focus:border-volt-500/60`}
       />
-      <button type="button" className={btn} onClick={() => onChange(value + 0.5)}>
+      <button type="button" className={btn} onClick={() => onChange(value + step)}>
         +
       </button>
     </div>

@@ -1,0 +1,782 @@
+{
+  "nba": [
+    {
+      "id": "3934672",
+      "name": "Jalen Brunson",
+      "position": "G"
+    },
+    {
+      "id": "4432166",
+      "name": "Cade Cunningham",
+      "position": "G"
+    },
+    {
+      "id": "4278073",
+      "name": "Shai Gilgeous-Alexander",
+      "position": "G"
+    },
+    {
+      "id": "4432573",
+      "name": "Paolo Banchero",
+      "position": "F"
+    },
+    {
+      "id": "3155526",
+      "name": "Dillon Brooks",
+      "position": "F"
+    },
+    {
+      "id": "3908809",
+      "name": "Donovan Mitchell",
+      "position": "G"
+    },
+    {
+      "id": "3112335",
+      "name": "Nikola Jokic",
+      "position": "C"
+    },
+    {
+      "id": "3917376",
+      "name": "Jaylen Brown",
+      "position": "G"
+    },
+    {
+      "id": "4395625",
+      "name": "RJ Barrett",
+      "position": "F"
+    },
+    {
+      "id": "4433134",
+      "name": "Scottie Barnes",
+      "position": "F"
+    },
+    {
+      "id": "1966",
+      "name": "LeBron James",
+      "position": "F"
+    },
+    {
+      "id": "3995",
+      "name": "Jrue Holiday",
+      "position": "G"
+    },
+    {
+      "id": "4065648",
+      "name": "Jayson Tatum",
+      "position": "F"
+    },
+    {
+      "id": "4845367",
+      "name": "Stephon Castle",
+      "position": "G"
+    },
+    {
+      "id": "4397882",
+      "name": "Tolu Smith",
+      "position": "F"
+    },
+    {
+      "id": "4397885",
+      "name": "Dalano Banton",
+      "position": "F"
+    },
+    {
+      "id": "4431690",
+      "name": "Zeke Nnaji",
+      "position": "F"
+    },
+    {
+      "id": "5107897",
+      "name": "Jonathan Mogbo",
+      "position": "F"
+    },
+    {
+      "id": "5239561",
+      "name": "Jase Richardson",
+      "position": "G"
+    },
+    {
+      "id": "2990984",
+      "name": "Buddy Hield",
+      "position": "G"
+    },
+    {
+      "id": "4610139",
+      "name": "Jeremy Sochan",
+      "position": "F"
+    },
+    {
+      "id": "4065673",
+      "name": "Tony Bradley",
+      "position": "C"
+    },
+    {
+      "id": "4397424",
+      "name": "Neemias Queta",
+      "position": "C"
+    },
+    {
+      "id": "6477",
+      "name": "Jonas Valanciunas",
+      "position": "C"
+    }
+  ],
+  "nfl": [
+    {
+      "id": "12483",
+      "name": "Matthew Stafford",
+      "position": "QB"
+    },
+    {
+      "id": "3046779",
+      "name": "Jared Goff",
+      "position": "QB"
+    },
+    {
+      "id": "2577417",
+      "name": "Dak Prescott",
+      "position": "QB"
+    },
+    {
+      "id": "4431452",
+      "name": "Drake Maye",
+      "position": "QB"
+    },
+    {
+      "id": "3912547",
+      "name": "Sam Darnold",
+      "position": "QB"
+    },
+    {
+      "id": "4360310",
+      "name": "Trevor Lawrence",
+      "position": "QB"
+    },
+    {
+      "id": "4431611",
+      "name": "Caleb Williams",
+      "position": "QB"
+    },
+    {
+      "id": "4426338",
+      "name": "Bo Nix",
+      "position": "QB"
+    },
+    {
+      "id": "4038941",
+      "name": "Justin Herbert",
+      "position": "QB"
+    },
+    {
+      "id": "3052587",
+      "name": "Baker Mayfield",
+      "position": "QB"
+    },
+    {
+      "id": "4379399",
+      "name": "James Cook III",
+      "position": "RB"
+    },
+    {
+      "id": "3043078",
+      "name": "Derrick Henry",
+      "position": "RB"
+    },
+    {
+      "id": "4242335",
+      "name": "Jonathan Taylor",
+      "position": "RB"
+    },
+    {
+      "id": "4430807",
+      "name": "Bijan Robinson",
+      "position": "RB"
+    },
+    {
+      "id": "4429160",
+      "name": "De'Von Achane",
+      "position": "RB"
+    },
+    {
+      "id": "4430737",
+      "name": "Kyren Williams",
+      "position": "RB"
+    },
+    {
+      "id": "4429795",
+      "name": "Jahmyr Gibbs",
+      "position": "RB"
+    },
+    {
+      "id": "3117251",
+      "name": "Christian McCaffrey",
+      "position": "RB"
+    },
+    {
+      "id": "4361579",
+      "name": "Javonte Williams",
+      "position": "RB"
+    },
+    {
+      "id": "3929630",
+      "name": "Saquon Barkley",
+      "position": "RB"
+    },
+    {
+      "id": "4430878",
+      "name": "Jaxon Smith-Njigba",
+      "position": "WR"
+    },
+    {
+      "id": "4426515",
+      "name": "Puka Nacua",
+      "position": "WR"
+    },
+    {
+      "id": "4426354",
+      "name": "George Pickens",
+      "position": "WR"
+    },
+    {
+      "id": "4362628",
+      "name": "Ja'Marr Chase",
+      "position": "WR"
+    }
+  ],
+  "nhl": [
+    {
+      "id": "3041969",
+      "name": "Nathan MacKinnon",
+      "position": "C"
+    },
+    {
+      "id": "4565236",
+      "name": "Cole Caufield",
+      "position": "RW"
+    },
+    {
+      "id": "3895074",
+      "name": "Connor McDavid",
+      "position": "C"
+    },
+    {
+      "id": "5206628",
+      "name": "Macklin Celebrini",
+      "position": "C"
+    },
+    {
+      "id": "4233875",
+      "name": "Jason Robertson",
+      "position": "LW"
+    },
+    {
+      "id": "3942335",
+      "name": "Kirill Kaprizov",
+      "position": "LW"
+    },
+    {
+      "id": "4874740",
+      "name": "Wyatt Johnston",
+      "position": "C"
+    },
+    {
+      "id": "2563060",
+      "name": "Nikita Kucherov",
+      "position": "RW"
+    },
+    {
+      "id": "4565233",
+      "name": "Matt Boldy",
+      "position": "LW"
+    },
+    {
+      "id": "5037",
+      "name": "Steven Stamkos",
+      "position": "C"
+    },
+    {
+      "id": "4352722",
+      "name": "Evan Bouchard",
+      "position": "D"
+    },
+    {
+      "id": "4233594",
+      "name": "Nick Suzuki",
+      "position": "C"
+    },
+    {
+      "id": "3114778",
+      "name": "David Pastrnak",
+      "position": "RW"
+    },
+    {
+      "id": "4320548",
+      "name": "Quinn Hughes",
+      "position": "D"
+    },
+    {
+      "id": "2562632",
+      "name": "Mark Scheifele",
+      "position": "C"
+    },
+    {
+      "id": "5080230",
+      "name": "Lane Hutson",
+      "position": "D"
+    },
+    {
+      "id": "4233586",
+      "name": "Martin Necas",
+      "position": "C"
+    },
+    {
+      "id": "3114727",
+      "name": "Leon Draisaitl",
+      "position": "C"
+    },
+    {
+      "id": "5136735",
+      "name": "Sam Malinski",
+      "position": "D"
+    },
+    {
+      "id": "2590829",
+      "name": "Josh Manson",
+      "position": "D"
+    },
+    {
+      "id": "3941974",
+      "name": "John Marino",
+      "position": "D"
+    },
+    {
+      "id": "4378656",
+      "name": "Mattias Samuelsson",
+      "position": "D"
+    },
+    {
+      "id": "4874929",
+      "name": "J.J. Moser",
+      "position": "D"
+    },
+    {
+      "id": "3941973",
+      "name": "Anthony Cirelli",
+      "position": "C"
+    }
+  ],
+  "mlb": [
+    {
+      "id": "41917",
+      "name": "Otto Lopez",
+      "position": "SS"
+    },
+    {
+      "id": "33481",
+      "name": "Yandy Diaz",
+      "position": "DH"
+    },
+    {
+      "id": "39572",
+      "name": "Luis Arraez",
+      "position": "2B"
+    },
+    {
+      "id": "4311634",
+      "name": "Nick Gonzales",
+      "position": "3B"
+    },
+    {
+      "id": "36018",
+      "name": "Yordan Alvarez",
+      "position": "DH"
+    },
+    {
+      "id": "5134621",
+      "name": "Jung Hoo Lee",
+      "position": "RF"
+    },
+    {
+      "id": "4346111",
+      "name": "Troy Johnston",
+      "position": "RF"
+    },
+    {
+      "id": "40803",
+      "name": "Brandon Marsh",
+      "position": "LF"
+    },
+    {
+      "id": "42470",
+      "name": "Michael Harris II",
+      "position": "CF"
+    },
+    {
+      "id": "41326",
+      "name": "Xavier Edwards",
+      "position": "2B"
+    },
+    {
+      "id": "33712",
+      "name": "Kyle Schwarber",
+      "position": "DH"
+    },
+    {
+      "id": "5016968",
+      "name": "Ben Rice",
+      "position": "1B"
+    },
+    {
+      "id": "4416591",
+      "name": "Hunter Goodman",
+      "position": "C"
+    },
+    {
+      "id": "4905921",
+      "name": "Junior Caminero",
+      "position": "3B"
+    },
+    {
+      "id": "32655",
+      "name": "Byron Buxton",
+      "position": "CF"
+    },
+    {
+      "id": "32767",
+      "name": "Matt Olson",
+      "position": "1B"
+    },
+    {
+      "id": "4918256",
+      "name": "James Wood",
+      "position": "RF"
+    },
+    {
+      "id": "4872685",
+      "name": "Colson Montgomery",
+      "position": "SS"
+    },
+    {
+      "id": "4684778",
+      "name": "Jordan Walker",
+      "position": "RF"
+    },
+    {
+      "id": "40459",
+      "name": "Luis Garcia Jr.",
+      "position": "1B"
+    },
+    {
+      "id": "42402",
+      "name": "CJ Abrams",
+      "position": "SS"
+    },
+    {
+      "id": "4345070",
+      "name": "Alec Burleson",
+      "position": "1B"
+    },
+    {
+      "id": "4966637",
+      "name": "Nick Kurtz",
+      "position": "1B"
+    },
+    {
+      "id": "39961",
+      "name": "Brandon Lowe",
+      "position": "2B"
+    }
+  ],
+  "epl": [
+    {
+      "id": "253989",
+      "name": "Erling Haaland",
+      "position": "",
+      "team": "Manchester City"
+    },
+    {
+      "id": "296395",
+      "name": "Cole Palmer",
+      "position": "",
+      "team": "Chelsea"
+    },
+    {
+      "id": "235662",
+      "name": "Alexander Isak",
+      "position": "",
+      "team": "Liverpool"
+    },
+    {
+      "id": "250787",
+      "name": "Phil Foden",
+      "position": "",
+      "team": "Manchester City"
+    },
+    {
+      "id": "124091",
+      "name": "Bruno Fernandes",
+      "position": "",
+      "team": "Manchester United"
+    },
+    {
+      "id": "134190",
+      "name": "Chris Wood",
+      "position": "",
+      "team": "Nottingham Forest"
+    },
+    {
+      "id": "259902",
+      "name": "Matheus Cunha",
+      "position": "",
+      "team": "Manchester United"
+    },
+    {
+      "id": "271170",
+      "name": "Bryan Mbeumo",
+      "position": "",
+      "team": "Manchester United"
+    },
+    {
+      "id": "289155",
+      "name": "Benjamin Sesko",
+      "position": "",
+      "team": "Manchester United"
+    },
+    {
+      "id": "284960",
+      "name": "João Pedro",
+      "position": "",
+      "team": "Chelsea"
+    },
+    {
+      "id": "273292",
+      "name": "Antoine Semenyo",
+      "position": "",
+      "team": "Manchester City"
+    },
+    {
+      "id": "241187",
+      "name": "Jean-Philippe Mateta",
+      "position": "",
+      "team": "Crystal Palace"
+    },
+    {
+      "id": "303748",
+      "name": "Florian Wirtz",
+      "position": "",
+      "team": "Liverpool"
+    },
+    {
+      "id": "249524",
+      "name": "Cody Gakpo",
+      "position": "",
+      "team": "Liverpool"
+    },
+    {
+      "id": "266599",
+      "name": "Mohammed Kudus",
+      "position": "",
+      "team": "Tottenham Hotspur"
+    },
+    {
+      "id": "285450",
+      "name": "Enzo Fernández",
+      "position": "",
+      "team": "Chelsea"
+    },
+    {
+      "id": "252747",
+      "name": "Jørgen Strand Larsen",
+      "position": "",
+      "team": "Crystal Palace"
+    },
+    {
+      "id": "268641",
+      "name": "Iliman Ndiaye",
+      "position": "",
+      "team": "Everton"
+    },
+    {
+      "id": "224077",
+      "name": "Yoane Wissa",
+      "position": "",
+      "team": "Newcastle United"
+    },
+    {
+      "id": "304901",
+      "name": "Hugo Ekitike",
+      "position": "",
+      "team": "Liverpool"
+    }
+  ],
+  "wc": [
+    {
+      "id": "231388",
+      "name": "Kylian Mbappé",
+      "position": "",
+      "team": "FRA"
+    },
+    {
+      "id": "45843",
+      "name": "Lionel Messi",
+      "position": "",
+      "team": "ARG"
+    },
+    {
+      "id": "253989",
+      "name": "Erling Haaland",
+      "position": "",
+      "team": "NOR"
+    },
+    {
+      "id": "291281",
+      "name": "Jude Bellingham",
+      "position": "",
+      "team": "ENG"
+    },
+    {
+      "id": "142200",
+      "name": "Harry Kane",
+      "position": "",
+      "team": "ENG"
+    },
+    {
+      "id": "362150",
+      "name": "Lamine Yamal",
+      "position": "",
+      "team": "ESP"
+    },
+    {
+      "id": "252107",
+      "name": "Vinícius Júnior",
+      "position": "",
+      "team": "BRA"
+    },
+    {
+      "id": "231050",
+      "name": "Raphinha",
+      "position": "",
+      "team": "BRA"
+    },
+    {
+      "id": "277206",
+      "name": "Julián Álvarez",
+      "position": "",
+      "team": "ARG"
+    },
+    {
+      "id": "219713",
+      "name": "Lautaro Martínez",
+      "position": "",
+      "team": "ARG"
+    },
+    {
+      "id": "280555",
+      "name": "Bukayo Saka",
+      "position": "",
+      "team": "ENG"
+    },
+    {
+      "id": "303748",
+      "name": "Florian Wirtz",
+      "position": "",
+      "team": "GER"
+    },
+    {
+      "id": "303821",
+      "name": "Jamal Musiala",
+      "position": "",
+      "team": "GER"
+    },
+    {
+      "id": "225607",
+      "name": "Christian Pulisic",
+      "position": "",
+      "team": "USA"
+    },
+    {
+      "id": "149945",
+      "name": "Son Heung-Min",
+      "position": "",
+      "team": "KOR"
+    },
+    {
+      "id": "249524",
+      "name": "Cody Gakpo",
+      "position": "",
+      "team": "NED"
+    },
+    {
+      "id": "159255",
+      "name": "Memphis Depay",
+      "position": "",
+      "team": "NED"
+    },
+    {
+      "id": "286831",
+      "name": "Michael Olise",
+      "position": "",
+      "team": "FRA"
+    },
+    {
+      "id": "229744",
+      "name": "Ousmane Dembélé",
+      "position": "",
+      "team": "FRA"
+    },
+    {
+      "id": "250465",
+      "name": "Pedri",
+      "position": "",
+      "team": "ESP"
+    },
+    {
+      "id": "312146",
+      "name": "Nico Williams",
+      "position": "",
+      "team": "ESP"
+    },
+    {
+      "id": "236721",
+      "name": "Alphonso Davies",
+      "position": "",
+      "team": "CAN"
+    },
+    {
+      "id": "273499",
+      "name": "Jonathan David",
+      "position": "",
+      "team": "CAN"
+    },
+    {
+      "id": "260775",
+      "name": "Santiago Gimenez",
+      "position": "",
+      "team": "MEX"
+    },
+    {
+      "id": "22774",
+      "name": "Cristiano Ronaldo",
+      "position": "",
+      "team": "POR"
+    },
+    {
+      "id": "124091",
+      "name": "Bruno Fernandes",
+      "position": "",
+      "team": "POR"
+    },
+    {
+      "id": "76762",
+      "name": "Luka Modric",
+      "position": "",
+      "team": "CRO"
+    },
+    {
+      "id": "240233",
+      "name": "Achraf Hakimi",
+      "position": "",
+      "team": "MAR"
+    }
+  ]
+}

@@ -140,6 +140,97 @@ export async function getGameLog(player, sport, n = 20) {
   }
 }
 
+// --- Matchups & game props ----------------------------------------------
+
+/**
+ * Games around now (yesterday -> +8 days) for the sport's league.
+ * Returns [{ id, date, time, status, detail, home, away, homeScore, awayScore }]
+ * where home/away = { id, abbr, name, logo }.
+ */
+export async function getMatchups(sport) {
+  const cfg = SPORTS[sport]
+  const cacheKey = `matchups:${sport}`
+  const hit = cacheGet(cacheKey)
+  if (hit) return hit
+
+  const fmt = (d) => d.toISOString().slice(0, 10).replaceAll('-', '')
+  const from = new Date(Date.now() - 1 * 86400000)
+  const to = new Date(Date.now() + 8 * 86400000)
+  const d = await fetchJson(
+    `https://site.api.espn.com/apis/site/v2/sports/${cfg.scoreboard}/scoreboard?dates=${fmt(from)}-${fmt(to)}&limit=100`,
+  )
+  const games = []
+  for (const ev of d.events || []) {
+    const comp = ev.competitions?.[0]
+    const cs = comp?.competitors || []
+    const h = cs.find((c) => c.homeAway === 'home')
+    const a = cs.find((c) => c.homeAway === 'away')
+    if (!h?.team?.id || !a?.team?.id) continue
+    const mk = (c) => ({
+      id: c.team.id,
+      abbr: c.team.abbreviation || c.team.shortDisplayName || '?',
+      name: c.team.shortDisplayName || c.team.displayName || '',
+      logo: c.team.logo || '',
+    })
+    games.push({
+      id: ev.id,
+      date: ev.date,
+      status: ev.status?.type?.state || 'pre', // pre | in | post
+      detail: ev.status?.type?.shortDetail || '',
+      home: mk(h),
+      away: mk(a),
+      homeScore: Number(h.score?.value ?? h.score) || 0,
+      awayScore: Number(a.score?.value ?? a.score) || 0,
+    })
+  }
+  games.sort((x, y) => (x.date > y.date ? 1 : -1))
+  cacheSet(cacheKey, games)
+  return games
+}
+
+/**
+ * A team's completed games, newest first:
+ * [{ date, opponent, home, for: n, against: n, total: n }]
+ */
+export async function getTeamRecent(sport, teamId, n = 10) {
+  const cfg = SPORTS[sport]
+  const cacheKey = `team:${sport}:${teamId}`
+  const hit = cacheGet(cacheKey)
+  if (hit) return hit
+
+  try {
+    const d = await fetchJson(
+      `https://site.api.espn.com/apis/site/v2/sports/${cfg.scoreboard}/teams/${teamId}/schedule`,
+    )
+    const out = []
+    for (const ev of d.events || []) {
+      const comp = ev.competitions?.[0]
+      if (!comp?.status?.type?.completed) continue
+      const cs = comp.competitors || []
+      const us = cs.find((c) => String(c.team?.id) === String(teamId))
+      const them = cs.find((c) => String(c.team?.id) !== String(teamId))
+      if (!us || !them) continue
+      const forV = Number(us.score?.value ?? us.score)
+      const agV = Number(them.score?.value ?? them.score)
+      if (!Number.isFinite(forV) || !Number.isFinite(agV)) continue
+      out.push({
+        date: ev.date?.slice(0, 10) || '',
+        opponent: them.team?.abbreviation || '?',
+        home: us.homeAway === 'home',
+        for: forV,
+        against: agV,
+        total: forV + agV,
+      })
+    }
+    out.sort((a, b) => (a.date < b.date ? 1 : -1))
+    const recent = out.slice(0, n)
+    cacheSet(cacheKey, recent)
+    return recent
+  } catch {
+    return []
+  }
+}
+
 // --- FIFA World Cup 2026 ------------------------------------------------
 // ESPN has no athlete gamelog for the World Cup, so we assemble one:
 // scoreboard (one cached call, all matches) + the athlete's eventlog +

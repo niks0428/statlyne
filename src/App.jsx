@@ -4,6 +4,7 @@ import SportSwitcher from './components/SportSwitcher'
 import Discover from './pages/Discover'
 import Research from './pages/Research'
 import Parlay from './pages/Parlay'
+import Game from './pages/Game'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/" element={<Discover />} />
         <Route path="/research" element={<Research />} />
         <Route path="/research/:sport/:playerId" element={<Research />} />
+        <Route path="/game/:sport/:eventId" element={<Game />} />
         <Route path="/parlay" element={<Parlay />} />
       </Routes>
       <BottomNav />

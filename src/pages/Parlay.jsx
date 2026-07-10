@@ -18,7 +18,7 @@ export default function Parlay() {
       `STATLYNE SLIP — ${legs.length} leg${legs.length > 1 ? 's' : ''}`,
       ...legs.map(
         (l) =>
-          `• ${SPORTS[l.sport]?.emoji || ''} ${l.playerName} ${l.dir.toUpperCase()} ${l.line} ${statShort(l.sport, l.stat)} — ${l.hitPct}% (${l.hits}/${l.total})`,
+          `• ${SPORTS[l.sport]?.emoji || ''} ${l.playerName} ${l.dir.toUpperCase()}${l.line != null ? ` ${l.line}` : ''} ${l.statLabel || statShort(l.sport, l.stat)} — ${l.hitPct}% (${l.hits}/${l.total})`,
       ),
       `Est. combined hit rate: ${combinedPct}% (naive independence)`,
       'Research & entertainment only — no real odds.',
@@ -75,7 +75,13 @@ export default function Parlay() {
       <div className="flex flex-col gap-2.5">
         {legs.map((l) => (
           <div key={l.key} className="rise-in flex items-center gap-3 rounded-2xl border border-edge bg-ink-800/80 p-3">
-            <Avatar name={l.playerName} sport={l.sport} playerId={l.playerId} />
+            {l.game ? (
+              <div className="w-11 h-11 shrink-0 rounded-xl bg-ink-600 border border-edge flex items-center justify-center text-xl">
+                {SPORTS[l.sport]?.emoji}
+              </div>
+            ) : (
+              <Avatar name={l.playerName} sport={l.sport} playerId={l.playerId} />
+            )}
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
                 <p className="truncate font-semibold text-white">{l.playerName}</p>
@@ -84,7 +90,8 @@ export default function Parlay() {
               <p className="text-[11px] text-mist">
                 {SPORTS[l.sport]?.emoji} {l.team ? `${l.team} · ` : ''}
                 <span className="uppercase font-bold text-fog">
-                  {l.dir} {l.line} {statShort(l.sport, l.stat)}
+                  {l.dir}
+                  {l.line != null ? ` ${l.line}` : ''} {l.statLabel || statShort(l.sport, l.stat)}
                 </span>
               </p>
             </div>

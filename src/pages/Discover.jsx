@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import stars from '../data/stars.json'
-import { getGameLog } from '../api/espn'
+import { getGameLog, getMatchups } from '../api/espn'
 import { SPORTS, statShort } from '../lib/sports'
 import { suggestedLine, hitRate, trendTier } from '../lib/trends'
 import { useStore } from '../store/useStore'
@@ -20,6 +20,60 @@ async function mapLimit(items, limit, fn) {
     }),
   )
   return out
+}
+
+function MatchupStrip({ sport }) {
+  const navigate = useNavigate()
+  const [games, setGames] = useState(null)
+
+  useEffect(() => {
+    let alive = true
+    setGames(null)
+    getMatchups(sport)
+      .then((g) => alive && setGames(g.slice(0, 14)))
+      .catch(() => alive && setGames([]))
+    return () => {
+      alive = false
+    }
+  }, [sport])
+
+  if (!games || !games.length) return null
+
+  const fmtWhen = (g) => {
+    if (g.status === 'in') return `LIVE ${g.awayScore}–${g.homeScore}`
+    if (g.status === 'post') return `FT ${g.awayScore}–${g.homeScore}`
+    return new Date(g.date).toLocaleString([], { weekday: 'short', hour: '2-digit', minute: '2-digit' })
+  }
+
+  return (
+    <div className="pb-3">
+      <p className="px-4 pb-1.5 text-[10px] uppercase tracking-widest text-mist">
+        Matchups · tap for game props
+      </p>
+      <div className="flex gap-2 overflow-x-auto no-scrollbar px-4">
+        {games.map((g) => (
+          <button
+            key={g.id}
+            onClick={() => navigate(`/game/${sport}/${g.id}`, { state: { game: g } })}
+            className="shrink-0 rounded-xl border border-edge bg-ink-800/80 px-3 py-2 text-left active:bg-ink-700"
+          >
+            <span className="flex items-center gap-1.5 font-display font-bold uppercase text-white">
+              {g.away.logo && <img src={g.away.logo} alt="" className="h-4 w-4 object-contain" />}
+              {g.away.abbr}
+              <span className="text-mist font-normal">@</span>
+              {g.home.logo && <img src={g.home.logo} alt="" className="h-4 w-4 object-contain" />}
+              {g.home.abbr}
+            </span>
+            <span
+              className={`mt-0.5 block text-[10px] ${g.status === 'in' ? 'text-volt-500 font-bold' : 'text-mist'}`}
+            >
+              {fmtWhen(g)}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function TrendCard({ sport, card, index }) {
@@ -128,10 +182,17 @@ export default function Discover() {
     }
   }, [sport])
 
-  if (!cards) return <Spinner label={`Scanning ${SPORTS[sport].label} trends`} />
+  if (!cards)
+    return (
+      <main className="pt-4">
+        <MatchupStrip sport={sport} />
+        <Spinner label={`Scanning ${SPORTS[sport].label} trends`} />
+      </main>
+    )
 
   return (
     <main className="pt-4">
+      <MatchupStrip sport={sport} />
       <div className="px-4 pb-3">
         <h2 className="font-display font-bold text-xl uppercase tracking-wide text-white">
           Trending {SPORTS[sport].label} props

@@ -22,7 +22,8 @@ Live: https://niks0428.github.io/statlyne/
 |---|---|
 | `/` | Discover — trend-card feed per sport, best over-trend per tracked star, sorted by hit rate |
 | `/research` / `/research/:sport/:playerId` | Player workstation — stat/window/home-away/opponent splits, line input, hit-rate, chart, game log |
-| `/parlay` | Slip — cross-sport legs, naive combined hit-rate estimate (independence assumption), share/copy |
+| `/game/:sport/:eventId` | Game props — match total, team totals, BTTS (soccer), computed from both teams' recent results |
+| `/parlay` | Slip — cross-sport player + game legs, naive combined hit-rate estimate (independence assumption), share/copy |
 
 ## Data sources (all ESPN)
 

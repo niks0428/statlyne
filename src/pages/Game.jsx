@@ -28,7 +28,7 @@ function PropCard({ prop, sport, game }) {
   const [dir, setDir] = useState(prop.key === 'btts' ? 'yes' : 'over')
   const [added, setAdded] = useState(false)
 
-  const line = prop.key === 'btts' ? null : (storeLine ?? prop.suggested)
+  const line = prop.key === 'btts' ? null : (storeLine ?? prop.book ?? prop.suggested)
   const { hits, total, pct } = useMemo(() => {
     const t = prop.sample.length
     if (!t) return { hits: 0, total: 0, pct: 0 }
@@ -104,7 +104,9 @@ function PropCard({ prop, sport, game }) {
       {prop.key !== 'btts' && (
         <>
           <p className="mt-1.5 text-right text-[9px] uppercase tracking-widest text-mist/60">
-            Suggested line {prop.suggested} — not a real sportsbook price
+            {prop.book != null
+              ? `${prop.bookProvider} line ${prop.book} · trend model suggests ${prop.suggested}`
+              : `Suggested line ${prop.suggested} — not a real sportsbook price`}
           </p>
           <div className="mt-2">
             <BarChart games={prop.sample} stat="v" line={line} dir={dir} height={60} animate={false} />
@@ -173,6 +175,9 @@ export default function Game() {
         short: `TOTAL ${cfg.unit}`,
         sample: merged,
         suggested: roundHalf(merged.reduce((a, g) => a + g.v, 0) / merged.length),
+        // real sportsbook total when ESPN carries one — becomes the default line
+        book: game.status === 'pre' ? (game.odds?.overUnder ?? null) : null,
+        bookProvider: game.odds?.provider,
       })
     }
     for (const [key, team, rec] of [
@@ -244,6 +249,12 @@ export default function Game() {
         <p className="mt-2 text-center text-[11px] text-mist">
           {SPORTS[sport].emoji} {game.status === 'pre' ? kickoff(game.date) : game.detail}
         </p>
+        {game.status === 'pre' && game.odds?.details && (
+          <p className="mt-1 text-center text-[11px] font-semibold text-volt-500">
+            {game.odds.provider}: {game.odds.details}
+            {game.odds.overUnder ? ` · O/U ${game.odds.overUnder}` : ''}
+          </p>
+        )}
       </div>
 
       <p className="mt-3 mb-2 text-[10px] uppercase tracking-widest text-mist">

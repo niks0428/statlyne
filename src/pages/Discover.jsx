@@ -69,6 +69,12 @@ function MatchupStrip({ sport }) {
             >
               {fmtWhen(g)}
             </span>
+            {g.status === 'pre' && g.odds?.details && (
+              <span className="block text-[9px] text-fog/80 font-semibold">
+                {g.odds.details}
+                {g.odds.overUnder ? ` · O/U ${g.odds.overUnder}` : ''}
+              </span>
+            )}
           </button>
         ))}
       </div>

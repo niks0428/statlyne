@@ -172,6 +172,15 @@ export async function getMatchups(sport) {
       name: c.team.shortDisplayName || c.team.displayName || '',
       logo: c.team.logo || '',
     })
+    // ESPN embeds real sportsbook lines pre-game (e.g. DraftKings)
+    const o = comp?.odds?.[0]
+    const odds = o
+      ? {
+          details: o.details || '',
+          overUnder: Number(o.overUnder) || null,
+          provider: o.provider?.name || 'book',
+        }
+      : null
     games.push({
       id: ev.id,
       date: ev.date,
@@ -181,6 +190,7 @@ export async function getMatchups(sport) {
       away: mk(a),
       homeScore: Number(h.score?.value ?? h.score) || 0,
       awayScore: Number(a.score?.value ?? a.score) || 0,
+      odds,
     })
   }
   games.sort((x, y) => (x.date > y.date ? 1 : -1))

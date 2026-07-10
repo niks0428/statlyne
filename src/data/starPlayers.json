@@ -1,0 +1,342 @@
+[
+  {
+    "id": 115,
+    "first_name": "Stephen",
+    "last_name": "Curry",
+    "name": "Stephen Curry",
+    "position": "G",
+    "team_id": 10,
+    "team_abbr": "GSW",
+    "team_name": "Golden State Warriors"
+  },
+  {
+    "id": 237,
+    "first_name": "LeBron",
+    "last_name": "James",
+    "name": "LeBron James",
+    "position": "F",
+    "team_id": 14,
+    "team_abbr": "LAL",
+    "team_name": "Los Angeles Lakers"
+  },
+  {
+    "id": 132,
+    "first_name": "Luka",
+    "last_name": "Doncic",
+    "name": "Luka Doncic",
+    "position": "F-G",
+    "team_id": 14,
+    "team_abbr": "LAL",
+    "team_name": "Los Angeles Lakers"
+  },
+  {
+    "id": 246,
+    "first_name": "Nikola",
+    "last_name": "Jokic",
+    "name": "Nikola Jokic",
+    "position": "C",
+    "team_id": 8,
+    "team_abbr": "DEN",
+    "team_name": "Denver Nuggets"
+  },
+  {
+    "id": 175,
+    "first_name": "Shai",
+    "last_name": "Gilgeous-Alexander",
+    "name": "Shai Gilgeous-Alexander",
+    "position": "G",
+    "team_id": 21,
+    "team_abbr": "OKC",
+    "team_name": "Oklahoma City Thunder"
+  },
+  {
+    "id": 15,
+    "first_name": "Giannis",
+    "last_name": "Antetokounmpo",
+    "name": "Giannis Antetokounmpo",
+    "position": "F",
+    "team_id": 17,
+    "team_abbr": "MIL",
+    "team_name": "Milwaukee Bucks"
+  },
+  {
+    "id": 434,
+    "first_name": "Jayson",
+    "last_name": "Tatum",
+    "name": "Jayson Tatum",
+    "position": "F",
+    "team_id": 2,
+    "team_abbr": "BOS",
+    "team_name": "Boston Celtics"
+  },
+  {
+    "id": 322,
+    "first_name": "Donovan",
+    "last_name": "Mitchell",
+    "name": "Donovan Mitchell",
+    "position": "G",
+    "team_id": 6,
+    "team_abbr": "CLE",
+    "team_name": "Cleveland Cavaliers"
+  },
+  {
+    "id": 3547238,
+    "first_name": "Anthony",
+    "last_name": "Edwards",
+    "name": "Anthony Edwards",
+    "position": "G",
+    "team_id": 18,
+    "team_abbr": "MIN",
+    "team_name": "Minnesota Timberwolves"
+  },
+  {
+    "id": 56677822,
+    "first_name": "Victor",
+    "last_name": "Wembanyama",
+    "name": "Victor Wembanyama",
+    "position": "F-C",
+    "team_id": 27,
+    "team_abbr": "SAS",
+    "team_name": "San Antonio Spurs"
+  },
+  {
+    "id": 73,
+    "first_name": "Jalen",
+    "last_name": "Brunson",
+    "name": "Jalen Brunson",
+    "position": "G",
+    "team_id": 20,
+    "team_abbr": "NYK",
+    "team_name": "New York Knicks"
+  },
+  {
+    "id": 3547245,
+    "first_name": "Tyrese",
+    "last_name": "Haliburton",
+    "name": "Tyrese Haliburton",
+    "position": "G",
+    "team_id": 12,
+    "team_abbr": "IND",
+    "team_name": "Indiana Pacers"
+  },
+  {
+    "id": 57,
+    "first_name": "Devin",
+    "last_name": "Booker",
+    "name": "Devin Booker",
+    "position": "G",
+    "team_id": 24,
+    "team_abbr": "PHX",
+    "team_name": "Phoenix Suns"
+  },
+  {
+    "id": 140,
+    "first_name": "Kevin",
+    "last_name": "Durant",
+    "name": "Kevin Durant",
+    "position": "F",
+    "team_id": 11,
+    "team_abbr": "HOU",
+    "team_name": "Houston Rockets"
+  },
+  {
+    "id": 666786,
+    "first_name": "Ja",
+    "last_name": "Morant",
+    "name": "Ja Morant",
+    "position": "G",
+    "team_id": 15,
+    "team_abbr": "MEM",
+    "team_name": "Memphis Grizzlies"
+  },
+  {
+    "id": 490,
+    "first_name": "Trae",
+    "last_name": "Young",
+    "name": "Trae Young",
+    "position": "G",
+    "team_id": 30,
+    "team_abbr": "WAS",
+    "team_name": "Washington Wizards"
+  },
+  {
+    "id": 278,
+    "first_name": "Damian",
+    "last_name": "Lillard",
+    "name": "Damian Lillard",
+    "position": "G",
+    "team_id": 25,
+    "team_abbr": "POR",
+    "team_name": "Portland Trail Blazers"
+  },
+  {
+    "id": 117,
+    "first_name": "Anthony",
+    "last_name": "Davis",
+    "name": "Anthony Davis",
+    "position": "F-C",
+    "team_id": 30,
+    "team_abbr": "WAS",
+    "team_name": "Washington Wizards"
+  },
+  {
+    "id": 228,
+    "first_name": "Kyrie",
+    "last_name": "Irving",
+    "name": "Kyrie Irving",
+    "position": "G",
+    "team_id": 7,
+    "team_abbr": "DAL",
+    "team_name": "Dallas Mavericks"
+  },
+  {
+    "id": 145,
+    "first_name": "Joel",
+    "last_name": "Embiid",
+    "name": "Joel Embiid",
+    "position": "F-C",
+    "team_id": 23,
+    "team_abbr": "PHI",
+    "team_name": "Philadelphia 76ers"
+  },
+  {
+    "id": 447,
+    "first_name": "Karl-Anthony",
+    "last_name": "Towns",
+    "name": "Karl-Anthony Towns",
+    "position": "C",
+    "team_id": 20,
+    "team_abbr": "NYK",
+    "team_name": "New York Knicks"
+  },
+  {
+    "id": 38017683,
+    "first_name": "Paolo",
+    "last_name": "Banchero",
+    "name": "Paolo Banchero",
+    "position": "F",
+    "team_id": 22,
+    "team_abbr": "ORL",
+    "team_name": "Orlando Magic"
+  },
+  {
+    "id": 17896026,
+    "first_name": "Franz",
+    "last_name": "Wagner",
+    "name": "Franz Wagner",
+    "position": "F",
+    "team_id": 22,
+    "team_abbr": "ORL",
+    "team_name": "Orlando Magic"
+  },
+  {
+    "id": 17896075,
+    "first_name": "Cade",
+    "last_name": "Cunningham",
+    "name": "Cade Cunningham",
+    "position": "G-F",
+    "team_id": 9,
+    "team_abbr": "DET",
+    "team_name": "Detroit Pistons"
+  },
+  {
+    "id": 17896055,
+    "first_name": "Scottie",
+    "last_name": "Barnes",
+    "name": "Scottie Barnes",
+    "position": "G-F",
+    "team_id": 28,
+    "team_abbr": "TOR",
+    "team_name": "Toronto Raptors"
+  },
+  {
+    "id": 3547239,
+    "first_name": "LaMelo",
+    "last_name": "Ball",
+    "name": "LaMelo Ball",
+    "position": "G",
+    "team_id": 4,
+    "team_abbr": "CHA",
+    "team_name": "Charlotte Hornets"
+  },
+  {
+    "id": 70,
+    "first_name": "Jaylen",
+    "last_name": "Brown",
+    "name": "Jaylen Brown",
+    "position": "G",
+    "team_id": 2,
+    "team_abbr": "BOS",
+    "team_name": "Boston Celtics"
+  },
+  {
+    "id": 406,
+    "first_name": "Domantas",
+    "last_name": "Sabonis",
+    "name": "Domantas Sabonis",
+    "position": "F",
+    "team_id": 26,
+    "team_abbr": "SAC",
+    "team_name": "Sacramento Kings"
+  },
+  {
+    "id": 4,
+    "first_name": "Bam",
+    "last_name": "Adebayo",
+    "name": "Bam Adebayo",
+    "position": "C-F",
+    "team_id": 16,
+    "team_abbr": "MIA",
+    "team_name": "Miami Heat"
+  },
+  {
+    "id": 335,
+    "first_name": "Jamal",
+    "last_name": "Murray",
+    "name": "Jamal Murray",
+    "position": "G",
+    "team_id": 8,
+    "team_abbr": "DEN",
+    "team_name": "Denver Nuggets"
+  },
+  {
+    "id": 38017685,
+    "first_name": "Chet",
+    "last_name": "Holmgren",
+    "name": "Chet Holmgren",
+    "position": "C-F",
+    "team_id": 21,
+    "team_abbr": "OKC",
+    "team_name": "Oklahoma City Thunder"
+  },
+  {
+    "id": 17896062,
+    "first_name": "Alperen",
+    "last_name": "Sengun",
+    "name": "Alperen Sengun",
+    "position": "F-C",
+    "team_id": 11,
+    "team_abbr": "HOU",
+    "team_name": "Houston Rockets"
+  },
+  {
+    "id": 17896076,
+    "first_name": "Evan",
+    "last_name": "Mobley",
+    "name": "Evan Mobley",
+    "position": "F-C",
+    "team_id": 6,
+    "team_abbr": "CLE",
+    "team_name": "Cleveland Cavaliers"
+  },
+  {
+    "id": 3547254,
+    "first_name": "Tyrese",
+    "last_name": "Maxey",
+    "name": "Tyrese Maxey",
+    "position": "G",
+    "team_id": 23,
+    "team_abbr": "PHI",
+    "team_name": "Philadelphia 76ers"
+  }
+]
